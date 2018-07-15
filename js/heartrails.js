@@ -2,14 +2,15 @@
   var myConnector = tableau.makeConnector();
   myConnector.getSchema = function (schemaCallback) {
     var cols = [
-      { id: "name", alias: "station_name", dataType: tableau.dataTypeEnum.string },
-      { id: "prefecture", alias: "prefecture", dataType: tableau.dataTypeEnum.string },
-      { id: "line", alias: "line_name", dataType: tableau.dataTypeEnum.string },
-      { id: "x", alias: "longitude", dataType: tableau.dataTypeEnum.float },
-      { id: "y", alias: "latitude", dataType: tableau.dataTypeEnum.float },
-      { id: "postal", alias: "postal_code", dataType: tableau.dataTypeEnum.string },
-      { id: "prev", alias: "previous_station_name", dataType: tableau.dataTypeEnum.string },
-      { id: "next", alias: "next_station_name", dataType: tableau.dataTypeEnum.string }
+      { id: "line", dataType: tableau.dataTypeEnum.string, alias: "line_name", description:"路線名" },
+      { id: "name", dataType: tableau.dataTypeEnum.string, alias: "station_name", description:"駅名" },
+      { id: "y", dataType: tableau.dataTypeEnum.float, alias: "latitude", description:"緯度" },
+      { id: "x", dataType: tableau.dataTypeEnum.float, alias: "longitude", description:"軽度" },
+      { id: "postal", dataType: tableau.dataTypeEnum.string, alias: "postal_code", description:"郵便番号" },
+      { id: "prefecture", dataType: tableau.dataTypeEnum.string, alias: "prefecture", description:"都道府県" },
+      { id: "prev", dataType: tableau.dataTypeEnum.string, alias: "previous_station_name", description:"前の駅名" },
+      { id: "next", dataType: tableau.dataTypeEnum.string, alias: "next_station_name", description:"次の駅名" },
+      { id: "order", dataType: tableau.dataTypeEnum.int, alias: "order", description:"駅順(登録順なので正確か不明)" }
     ];
 
     var tableSchema = {
@@ -34,14 +35,15 @@
             var stationData = [];
             for (row = 0; row < stationRowData.length; row++) {
               stationData.push({
-                "name": stationRowData[row].name,
-                "prefecture": stationRowData[row].prefecture,
                 "line": stationRowData[row].line,
-                "x": stationRowData[row].x,
+                "name": stationRowData[row].name,
                 "y": stationRowData[row].y,
+                "x": stationRowData[row].x,
                 "postal": stationRowData[row].postal,
+                "prefecture": stationRowData[row].prefecture,
                 "prev": stationRowData[row].prev,
-                "next": stationRowData[row].next
+                "next": stationRowData[row].next,
+                "order": row + 1
               });
             }
             table.appendRows(stationData);
